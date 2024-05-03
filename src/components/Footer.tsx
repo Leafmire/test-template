@@ -1,12 +1,7 @@
+import { product_footer } from '../data/menu'
+
 const navigation = {
-    main: [
-      { name: 'About', href: '#' },
-      { name: 'Blog', href: '#' },
-      { name: 'Jobs', href: '#' },
-      { name: 'Press', href: '#' },
-      { name: 'Accessibility', href: '#' },
-      { name: 'Partners', href: '#' },
-    ],
+    main: product_footer,
     social: [
       {
         name: 'Facebook',
@@ -74,12 +69,12 @@ const navigation = {
   
   export default function Footer() {
     return (
-      <footer className="bg-white">
-        <div className="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
+      <footer className="bg-purple-900">
+        <div className="mx-auto max-w-7xl overflow-hidden px-6 py-16 sm:py-20 lg:px-8 border-t border-solid">
           <nav className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
             {navigation.main.map((item) => (
               <div key={item.name} className="pb-6">
-                <a href={item.href} className="text-sm leading-6 text-gray-600 hover:text-gray-900">
+                <a href={item.href} className="text-sm leading-6 text-white hover:text-gray-100">
                   {item.name}
                 </a>
               </div>
@@ -87,13 +82,13 @@ const navigation = {
           </nav>
           <div className="mt-10 flex justify-center space-x-10">
             {navigation.social.map((item) => (
-              <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
+              <a key={item.name} href={item.href} className="text-white hover:text-gray-100">
                 <span className="sr-only">{item.name}</span>
                 <item.icon className="h-6 w-6" aria-hidden="true" />
               </a>
             ))}
           </div>
-          <p className="mt-10 text-center text-xs leading-5 text-gray-500">
+          <p className="mt-10 text-center text-xs leading-5 text-gray-400">
             &copy; 2024 Your Company, Inc. All rights reserved.
           </p>
         </div>
