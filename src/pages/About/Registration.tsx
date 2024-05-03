@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "../../components/Layout";
 
-const Resistration = () => {
+const Registration = () => {
     return (
         <Layout>
             <div className="border-b border-purple-700 pb-16 pt-24">
@@ -14,9 +14,9 @@ const Resistration = () => {
                     <h1 className="text-gray-900 text-3xl lg:text-5xl font-bold font-heading text-center">수강신청</h1>
                 </div>
             </div>
-            <div>Resistration</div>
+            <div>Registration</div>
         </Layout>
     );
 };
 
-export default Resistration;
+export default Registration;
