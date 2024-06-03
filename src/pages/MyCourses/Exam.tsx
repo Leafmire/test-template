@@ -1,8 +1,6 @@
 import React from "react";
-import Layout from "../../components/Layout";
 import ReactFullpage from "@fullpage/react-fullpage";
 import { AuthProvider } from "../../States/AuthContext";
-import { Field, Label, Radio, RadioGroup } from "@headlessui/react";
 import ExamAnswerButton from "../../components/ExamAnswerButton";
 
 const Exam = () => {
@@ -14,7 +12,7 @@ const Exam = () => {
                         <ReactFullpage
                             credits={{ enabled: false, label: "", position: "right" }}
                             scrollOverflow={true}
-                            render={({ state, fullpageApi }) => {
+                            render={() => {
                                 return (
                                     <ReactFullpage.Wrapper>
                                         <div className="section">

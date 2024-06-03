@@ -20,7 +20,7 @@ const Exam = () => {
 
     <div>
        {index} 번 문제 <div class="write_div"><div class="wr_content"></div></div>
-       <Field>
+        <Field>
         <Label>①</Label>
         <Input type="text" name={`choice1_${index}`} />
         </Field>
