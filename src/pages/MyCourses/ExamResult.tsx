@@ -14,7 +14,15 @@ const ExamResult = () => {
                     <h1 className="text-gray-900 text-3xl lg:text-5xl font-bold font-heading text-center">모의시험 성적</h1>
                 </div>
             </div>
-            <div>ExamResult</div>
+            <div className="text-center pt-36 pb-24">
+                <p className="text-base font-semibold"><span className="text-orange-600">USER </span> 님의 점수</p>
+                <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">100</h1>
+                <div className="mt-10 flex items-center justify-center gap-x-6">
+                    <a href="/" className="text-sm font-semibold text-gray-900">
+                        메인 화면으로 <span aria-hidden="true">&rarr;</span>
+                    </a>
+                </div>
+            </div>
         </Layout>
     );
 };
