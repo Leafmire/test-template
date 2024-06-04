@@ -1,44 +1,62 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 interface AuthContextType {
-  isLoggedIn: boolean;
-  login: (token: string) => void;
-  logout: () => void;
+    isLoggedIn: boolean;
+    login: (token: string) => void;
+    logout: () => void;
+    kakaoLogin: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
-  isLoggedIn: false,
-  login: () => {},
-  logout: () => {},
+    isLoggedIn: false,
+    login: () => {},
+    logout: () => {},
+    kakaoLogin: () => {},
 });
 
 export const AuthProvider = ({ children }: any) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setIsLoggedIn(true);
-    }
-  }, []);
+    const initKakao = () => {
+        const jsKey = "883a114dde0f9d69da887c2f120f099f";
+        if (window.Kakao) {
+            const Kakao = window.Kakao;
+            if (Kakao && !Kakao.isInitialized()) {
+                Kakao.init(jsKey);
+            }
+        }
+    };
 
-  const login = (token: string) => {
-    localStorage.setItem('token', token);
-    setIsLoggedIn(true);
-  };
+    useEffect(() => {
+        initKakao();
+    }, []);
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-  };
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            setIsLoggedIn(false);
+        }
+    }, []);
 
-  return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+    const login = (token: string) => {
+        localStorage.setItem("token", token);
+        setIsLoggedIn(true);
+    };
+
+    const logout = () => {
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+    };
+
+    const kakaoLogin = () => {
+        window.Kakao.Auth.authorize({
+          redirectUri: 'http://localhost:5173/auth/callback', // 카카오 개발자 콘솔에 등록된 Redirect URI
+        });
+      };
+
+    return <AuthContext.Provider value={{ isLoggedIn, login, logout, kakaoLogin }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+    return useContext(AuthContext);
 };

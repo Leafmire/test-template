@@ -15,6 +15,7 @@ import MyLearningHistory from "./pages/MyCourses/MyLearningHistory.tsx";
 import Archive from "./pages/Services/Archive.tsx";
 import FAQ from "./pages/Services/FAQ.tsx";
 import Qna from "./pages/Services/Qna.tsx";
+import KakaoCallback from "./pages/Auth/Callback.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -81,4 +82,8 @@ export const router = createBrowserRouter([
         path: "/online-learning-lab",
         element: <Lab />,
     },
+    {
+        path: "/auth/callback",
+        element: <KakaoCallback />,
+    }
 ]);

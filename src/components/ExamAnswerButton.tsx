@@ -1,11 +1,19 @@
 import { Field, Label, Radio, RadioGroup } from "@headlessui/react";
 import { useState } from "react";
 
-export default function ExamAnswerButton(props: { questionNo: string; questions: string[] }) {
-    let [selected, setSelected] = useState("choice1");
+export default function ExamAnswerButton({ questionNo, questions, setSelectedAnswers }: {
+    questionNo: string;
+    questions: string[];
+    setSelectedAnswers: any;
+}) {
+    const [selected, setSelected] = useState("");
+    const handleSelection = (value: any) => {
+        setSelected(value);
+        setSelectedAnswers((prev: any) => ({ ...prev, [questionNo]: value }));
+    };
     return (
-        <RadioGroup name={`question${props.questionNo}`} value={selected} onChange={setSelected} aria-label="Server size">
-            {props.questions.map((question, index) => (
+        <RadioGroup name={`question${questionNo}`} value={selected} onChange={handleSelection} aria-label="Server size">
+            {questions.map((question, index) => (
                 <Field key={`choice${index + 1}`} className="flex items-center gap-2">
                     <Radio
                         value={`choice${index + 1}`}

@@ -9,7 +9,7 @@ import { useAuth } from "../States/AuthContext";
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, kakaoLogin } = useAuth();
 
     return (
         <header className="bg-white sticky">
@@ -38,9 +38,13 @@ export default function Header() {
                     <MenuButton product_name="나의 강의실" product={product_my_course} />
                 </Popover.Group>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                        {isLoggedIn ? <img src="/kakao_login_small.png" alt="" /> : <p>HI! user</p>}
-                    </a>
+                    {!isLoggedIn ? (
+                        <a href="#" onClick={kakaoLogin} className="text-sm font-semibold leading-6 text-gray-900">
+                            <img src="/kakao_login_small.png" alt="" />
+                        </a>
+                    ) : (
+                        <p>HI! user</p>
+                    )}
                 </div>
             </nav>
             <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -66,12 +70,17 @@ export default function Header() {
                                 <MobileMenuButton product_name="나의 강의실" product={product_my_course} />
                             </div>
                             <div className="py-6">
-                                <a
-                                    href="#"
-                                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    {isLoggedIn ? <img src="/kakao_login_medium_narrow.png" alt="" /> : <p>HI! user</p>}
-                                </a>
+                                {!isLoggedIn ? (
+                                    <a
+                                        href="#"
+                                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                                        onClick={kakaoLogin}
+                                    >
+                                        <img src="/kakao_login_medium_narrow.png" alt="" />
+                                    </a>
+                                ) : (
+                                    <p>HI! user</p>
+                                )}
                             </div>
                         </div>
                     </div>
