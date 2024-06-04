@@ -9,7 +9,7 @@ import { useAuth } from "../States/AuthContext";
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const { isLoggedIn, kakaoLogin } = useAuth();
+    const { isLoggedIn, kakaoLogin, logout } = useAuth();
 
     return (
         <header className="bg-white sticky">
@@ -43,7 +43,9 @@ export default function Header() {
                             <img src="/kakao_login_small.png" alt="" />
                         </a>
                     ) : (
-                        <p>HI! user</p>
+                        <a href="" onClick={logout} className="text-sm font-semibold leading-6 text-gray-900">
+                            Logout <span aria-hidden="true">&rarr;</span>
+                        </a>
                     )}
                 </div>
             </nav>
@@ -79,7 +81,9 @@ export default function Header() {
                                         <img src="/kakao_login_medium_narrow.png" alt="" />
                                     </a>
                                 ) : (
-                                    <p>HI! user</p>
+                                    <a href="" onClick={logout} className="text-sm font-semibold leading-6 text-gray-900">
+                                        Logout <span aria-hidden="true">&rarr;</span>
+                                    </a>
                                 )}
                             </div>
                         </div>

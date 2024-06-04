@@ -8,14 +8,14 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType>({
-    isLoggedIn: false,
+    isLoggedIn: localStorage.getItem("token") ? true : false,
     login: () => {},
     logout: () => {},
     kakaoLogin: () => {},
 });
 
 export const AuthProvider = ({ children }: any) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("token") ? true : false);
 
     const initKakao = () => {
         const jsKey = "883a114dde0f9d69da887c2f120f099f";
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: any) => {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
-            setIsLoggedIn(false);
+            setIsLoggedIn(true);
         }
     }, []);
 
@@ -46,6 +46,7 @@ export const AuthProvider = ({ children }: any) => {
     const logout = () => {
         localStorage.removeItem("token");
         setIsLoggedIn(false);
+        window.location.href = "/";
     };
 
     const kakaoLogin = () => {

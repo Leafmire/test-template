@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
+import { decode } from "../../services/decode";
 
 const ExamResult = () => {
+    const [userName, setUserName] = useState("USER" as string);
+    const [testResult, setTestResult] = useState(0);
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        const user = decode(token ? token : "");
+        fetch(`http://localhost:3000/users/${user.id}`, {
+        }).then((res) => res.json())
+            .then((data) => {
+                setUserName(data.name);
+                fetch(`http://localhost:3000/test-results/${data.id}/12`, {
+                }).then((res) => res.json().then((data) => {
+                    setTestResult(data.score);
+                }));
+            });
+    }, []);
     return (
         <Layout>
             <div className="border-b border-purple-700 pb-16 pt-24">
@@ -15,8 +31,8 @@ const ExamResult = () => {
                 </div>
             </div>
             <div className="text-center pt-36 pb-24">
-                <p className="text-lg font-semibold"><span className="text-orange-600">USER </span> 님의 점수</p>
-                <h1 className="mt-4 text-6xl font-bold tracking-tight text-gray-900 sm:text-8xl">100</h1>
+                <p className="text-lg font-semibold"><span className="text-orange-600">{userName} </span> 님의 점수</p>
+                <h1 className="mt-4 text-6xl font-bold tracking-tight text-gray-900 sm:text-8xl">{testResult}</h1>
                 <div className="mt-10 flex items-center justify-center gap-x-6">
                     <a href="/" className="text-sm font-semibold text-gray-900">
                         메인 화면으로 <span aria-hidden="true">&rarr;</span>
