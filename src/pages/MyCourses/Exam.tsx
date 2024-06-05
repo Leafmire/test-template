@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import ExamAnswerButton from "../../components/ExamAnswerButton";
 import jsonData from "../../data/exam_question.json";
 import { decode } from "../../services/decode";
-import { Scroller, Section } from 'react-fully-scrolled';
+import { useAuth } from "../../States/AuthContext";
+import { useParams } from "react-router-dom";
 
 const groupByExamId = (jsonData: any) => {
     const tableData = jsonData.find((entry: any) => entry.type === "table").data;
@@ -14,20 +15,26 @@ const groupByExamId = (jsonData: any) => {
         acc[examId].push({
             questionNo: item.q_no,
             question: item.q_content,
-            choices: [item.q_item_1, item.q_item_2, item.q_item_3, item.q_item_4, item.q_item_5].filter(choice => choice),
-            correctAnswer: `choice${item.q_key}`
+            choices: [item.q_item_1, item.q_item_2, item.q_item_3, item.q_item_4, item.q_item_5].filter((choice) => choice),
+            correctAnswer: `choice${item.q_key}`,
         });
         return acc;
     }, {});
 };
 
 const Exam = () => {
+    const { isLoggedIn } = useAuth();
     const [groupedQuestions, setGroupedQuestions] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: string }>({});
+    const { testId } = useParams();
 
     useEffect(() => {
-        const groupedData = groupByExamId(jsonData);
-        setGroupedQuestions(groupedData['12']);
+        if (!isLoggedIn || testId === undefined) {
+            window.location.href = "/";
+        } else {
+            const groupedData = groupByExamId(jsonData);
+            setGroupedQuestions(groupedData[testId]);
+        }
     }, [jsonData]);
 
     const handleSubmit = (event: any) => {
@@ -49,17 +56,21 @@ const Exam = () => {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
-        }).then((res) => res.json())
+        })
+            .then((res) => res.json())
             .then((data) => {
-                fetch(`http://localhost:3000/test-results`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({ test_id: 12, score: score, user_id: data.id }),
-                }).then(() =>
-                    window.location.href = "/exam-result");
+                if (testId) {
+                    fetch(`http://localhost:3000/test-results`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({ test_id: parseInt(testId), score: score, user_id: data.id }),
+                    }).then(() => (window.location.href = "/exam-result"));
+                } else {
+                    window.location.href = "/";
+                }
             });
     };
 
@@ -76,7 +87,10 @@ const Exam = () => {
                         <section className="section" key={question.questionNo}>
                             <div className="max-w-screen-lg text-left mb-20 p-5 bg-white h-full mx-auto">
                                 <div className="md:text-base text-sm text-orange-600 mb-3">문제 {question.questionNo}</div>
-                                <div className="md:text-xl text-lg text-gray-900 font-medium mb-3" dangerouslySetInnerHTML={{ __html: question.question }} />
+                                <div
+                                    className="md:text-xl text-lg text-gray-900 font-medium mb-3"
+                                    dangerouslySetInnerHTML={{ __html: question.question }}
+                                />
                                 <ExamAnswerButton
                                     questionNo={question.questionNo.toString()}
                                     questions={question.choices}
@@ -87,7 +101,11 @@ const Exam = () => {
                     ))}
                     <section className="section">
                         <div className="max-w-screen-lg text-left mb-20 p-5 bg-white text-xl h-full mx-auto">
-                            <button type="submit" id="btn_submit" className="rounded-md bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">
+                            <button
+                                type="submit"
+                                id="btn_submit"
+                                className="rounded-md bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
+                            >
                                 제출
                             </button>
                         </div>
